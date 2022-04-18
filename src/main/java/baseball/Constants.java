@@ -4,8 +4,6 @@ public class Constants {
 
     public static final int CONTINUE=1;
     public static final int END=2;
-    public static final int IS_STRIKE=0;
-    public static final int IS_BALL=1;
 
     public static final String STRIKE="스트라이크";
     public static final String BALL="볼";

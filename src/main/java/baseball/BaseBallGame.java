@@ -1,18 +1,16 @@
 package baseball;
 
 import camp.nextstep.edu.missionutils.Console;
-import camp.nextstep.edu.missionutils.Randoms;
 
 public class BaseBallGame {
 
     public void run() {
         boolean reGame=true;
-        BaseBallJudge refree = new BaseBallJudge();
-        MakeNumber mn = new MakeNumber();
-        String ansNumber = mn.makeRandomNumber();
+        BaseBallJudge judge = new BaseBallJudge();
+        BaseBallBall ballNumber = new BaseBallBall();
+        ballNumber.makeRandomNumber();
 
         while(reGame) {
-            //System.out.println(ansNumber);
             System.out.println(Constants.INPUT_NUMBER_MENT);
             String number = Console.readLine();
 
@@ -20,13 +18,12 @@ public class BaseBallGame {
             this.isArgLengthOverThree(number);
 
             //숫자 심판 후 출력
-            int[] judge = refree.judgeNumber(number, ansNumber);
-            refree.printJudge(judge);
+            judge.judgeNumber(number, ballNumber.getNumber());
+            judge.printJudge();
 
             //end 조건 확인
-            boolean threeStrike = refree.isThreeStrike(judge);
-            reGame = this.isContinue(threeStrike);
-            ansNumber = mn.makeNewNumber(threeStrike, reGame, ansNumber);
+            reGame=judge.isReGame();
+            ballNumber.makeNewNumber(judge, reGame);
         }
     }
 
@@ -35,21 +32,4 @@ public class BaseBallGame {
             throw new IllegalArgumentException();
         }
     }
-
-    public boolean isContinue(boolean threeStrike) {
-        if (threeStrike) {
-            return getReGame();
-        }
-        return true;
-    }
-
-    public boolean getReGame(){
-        String exit = Console.readLine();
-        if (Integer.valueOf(exit)==Constants.END) {
-            System.out.println(Constants.GAME_OVER_MENT);
-            return false;
-        }
-        return true;
-    }
-
 }

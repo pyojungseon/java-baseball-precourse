@@ -1,8 +1,23 @@
 package baseball;
 
+import camp.nextstep.edu.missionutils.Console;
+
 public class BaseBallJudge {
-    public boolean isThreeStrike(int[] judge) {
-        if (judge[Constants.IS_STRIKE]==3) {
+
+    private int strike;
+    private int ball;
+
+    public BaseBallJudge() {
+        setNewCount();
+    }
+
+    public void setNewCount() {
+        strike=0;
+        ball=0;
+    }
+
+    public boolean isThreeStrike() {
+        if (strike==3) {
             System.out.println(Constants.THREE_STRIKE_MENT);
             System.out.println(Constants.DO_YOU_WANT_REGAME_MENT);
             return true;
@@ -10,29 +25,28 @@ public class BaseBallJudge {
         return false;
     }
 
-    public void printJudge(int[] judge) {
+    public void printJudge() {
         StringBuilder ans = new StringBuilder();
-        if (judge[Constants.IS_BALL]>0) {
-            ans.append(judge[Constants.IS_BALL]+Constants.BALL+" ");
+        if (ball>0) {
+            ans.append(ball+Constants.BALL+" ");
         }
-        if (judge[Constants.IS_STRIKE]>0) {
-            ans.append(judge[Constants.IS_STRIKE]+Constants.STRIKE+" ");
+        if (strike>0) {
+            ans.append(strike+Constants.STRIKE+" ");
         }
-        if (judge[Constants.IS_BALL]==0 && judge[Constants.IS_STRIKE]==0) {
+        if (ball==0 && strike==0) {
             ans.append(Constants.NOTHING);
         }
         System.out.println(ans.toString().trim());
     }
 
-    public int[] judgeNumber(String number, String ansNumber) {
-        int[] judge = {0, 0};
+    public void judgeNumber(String number, String ansNumber) {
+        setNewCount();
         for (int i = 0; i < number.length(); i++) {
             int strike = checkStrike(number.charAt(i), ansNumber.charAt(i));
             int ball = checkBall(ansNumber, number.charAt(i));
-            judge[Constants.IS_STRIKE]+=strike;
-            judge[Constants.IS_BALL]=judge[Constants.IS_BALL]+ball-strike;
+            this.strike+=strike;
+            this.ball=this.ball+ball-strike;
         }
-        return judge;
     }
 
     public int checkStrike(char number, char ansNumber) {
@@ -47,5 +61,21 @@ public class BaseBallJudge {
             return 1;
         }
         return 0;
+    }
+
+    public boolean isReGame() {
+        if(this.isThreeStrike()) {
+            return getReGame();
+        }
+        return true;
+    }
+
+    public boolean getReGame() {
+        String exit = Console.readLine();
+        if (Integer.valueOf(exit) == Constants.END) {
+            System.out.println(Constants.GAME_OVER_MENT);
+            return false;
+        }
+        return true;
     }
 }

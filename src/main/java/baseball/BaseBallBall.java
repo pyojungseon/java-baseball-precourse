@@ -2,21 +2,35 @@ package baseball;
 
 import camp.nextstep.edu.missionutils.Randoms;
 
-public class MakeNumber {
-    public String makeNewNumber(boolean threeStrike, boolean reGame, String ansNumber) {
-        if (threeStrike && reGame) {
-            return this.makeRandomNumber();
-        }
-        return ansNumber;
+public class BaseBallBall {
+
+    private boolean threeStrike;
+    private String number;
+
+    public BaseBallBall() {
+        threeStrike=false;
+        number="";
     }
 
-    public String makeRandomNumber() {
+    public String getNumber() {
+        return number;
+    }
+
+    public void makeNewNumber(BaseBallJudge judge, boolean reGame) {
+        threeStrike = judge.isThreeStrike();
+        if (threeStrike && reGame) {
+            this.makeRandomNumber();
+            judge.setNewCount();
+        }
+    }
+
+    public void makeRandomNumber() {
         StringBuilder ansNumber = new StringBuilder();
         while(ansNumber.length()<3) {
             int rdNumber = Randoms.pickNumberInRange(0, 9);
             this.addUniqueNumber(ansNumber, rdNumber);
         }
-        return ansNumber.toString();
+        number=ansNumber.toString();
     }
 
     public void addUniqueNumber(StringBuilder ansNumber, int rdNumber) {
